@@ -37,7 +37,7 @@ int main()
                 int x;
                 //populate the linked-list!
                 while( is >> x ) {
-                      adjList[countV].push_back(x);
+                      adjList[countV].push_back(x); //use insert and find_gt here?
                 }
 
           countV++;
@@ -57,15 +57,38 @@ int main()
     //test find_gt
     find_gt(adjList[0].begin(), adjList[0].end(), 3);
 
+    //making final adjacency list:
+     vector<list<int>> adjListFinal;
+    list<int> myList;  // an empty list
+    adjListFinal.push_back(myList);
+    std::list<int>::iterator temp;
+    temp = adjList[0].begin();
+    list::insert(temp, adjList[0].begin()); //not working!!!
+
     return 0;
 }
 
 list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop,int x)
 {
-  std::list<int>::const_iterator temp_iter;
+
+  std::list<int>::iterator temp_iter;
+  /*
   for(temp_iter = start; temp_iter != stop; ++temp_iter)
   {
         if(*temp_iter > x)
             return temp_iter;
+  }*/
+
+  temp_iter = (++start);
+  if(*temp_iter > *start)
+  {
+      return start;
+  }
+  else
+  {
+      int temp = *temp_iter;
+      *temp_iter = *start;
+      *start = *temp_iter;
+      return temp_iter;
   }
 }
