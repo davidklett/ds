@@ -17,6 +17,8 @@ using std::vector;
 list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop,
                             int x);
 
+void printAdjList(vector<list<int>> adjList);
+
 int main()
 {
 
@@ -55,7 +57,7 @@ int main()
     std::list<int>::const_iterator iterator;
     for(iterator = adjList[0].begin(); iterator != adjList[0].end(); ++iterator)
     {
-        std::cout << *iterator;
+        //std::cout << *iterator;
     }
 
     //test find_gt
@@ -68,6 +70,8 @@ int main()
     std::list<int>::iterator temp;
     temp = adjList[0].begin();
     //list::insert(temp, adjList[0].begin()); //not working!!!
+
+    printAdjList(adjList);
 
     return 0;
 }
@@ -84,5 +88,43 @@ list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop,
   }
 
   return stop;
-  
+
+}
+
+//print the adjacency list:
+void printAdjList(vector<list<int>> adjList)
+{
+  int numRows = adjList.size();
+  std::list<int>::iterator temp;
+  for(int i = 0; i < numRows; i++)
+  {
+    for(temp = adjList[i].begin(); temp != adjList[i].end(); ++temp)
+    {
+      cout << *temp << " ";
+    }
+
+    cout << endl;
+  }
+}
+
+bool connComponent(const list<int>& a, const list<int>& b)
+{
+  std::list<int>::iterator aIter = a.begin();
+  std::list<int>::iterator bIter = b.begin();
+  std::list<int>::iterator temp_iter1, temp_iter2;
+  for(temp_iter1 = a.begin(); temp_iter != a.end(); ++temp_iter)
+  {
+    for(temp_iter2 = b.begin(); bIter != b.end(); ++bIter)
+    {
+      if(*temp_iter1 == *temp_iter2)
+        return true;
+    }
+  }
+
+  return false;
+}
+
+bool merge2(list<int> &a, list<int> &b)
+{
+
 }
