@@ -84,18 +84,5 @@ list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop,
   }
 
   return stop;
-  /*
-
-  temp_iter = (++start);
-  if(*temp_iter > *start)
-  {
-      return start;
-  }
-  else
-  {
-      int temp = *temp_iter;
-      *temp_iter = *start;
-      *start = *temp_iter;
-      return temp_iter;
-  }*/
+  
 }
