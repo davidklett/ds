@@ -19,6 +19,7 @@ list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop,
 
 void printAdjList(vector<list<int>> adjList);
 bool connComponent(const list<int>& a, const list<int>& b);
+bool merge2(list<int> &a, list<int> &b);
 int main()
 {
 
@@ -66,27 +67,29 @@ int main()
     do{
 
       cout << "Enter two list ids to potentially merge together or -1 to quit: ";
-      int merge1, merge2;
+      int list1, list2;
+      list1 = 0;
+      list2 = 0;
 
-      cin >> merge1 >> merge2;
-      if((merge1 != -1) || (merge2 != -1)) //test if user wants to quit
+      cin >> list1 >> list2;
+      if((list1 != -1) || (list2 != -1)) //test if user wants to quit
       {
-          ++merge1;
-          ++merge2;
-          merge2(adjList[merge1], adjList[merge2]);
-          if(adjList[merge1].size() > adjList[merge2].size())
-              adjList[merge2].erase();
+          ++list1;
+          ++list2;
+          merge2(adjList[list1], adjList[list2]);
+          if(adjList[list1].size() > adjList[list2].size())
+              adjList[list2].erase(adjList[list2].begin(), adjList[list2].end());
           else
-              adjList[merge1].erase();
-          
+              adjList[list1].erase(adjList[list1].begin(), adjList[list1].end());
+
       }
       else
       {
           flag = 0;
       }
-      
+
     }while(flag);
-    
+
     return 0;
 }
 
@@ -144,12 +147,13 @@ bool connComponent(const list<int>& a, const list<int>& b)
         ++temp_iter2;
       }
     }
-       ++temp_iter1;
+
+    ++temp_iter1;
       //if(*temp_iter1 == *temp_iter2)
       //  return true;
-    }
-   
-  }
+ }
+
+
 
   return false;
 }
