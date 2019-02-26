@@ -27,7 +27,7 @@ int main()
   //Prompt user for input for the file name
     cout << "Please enter the graph filename to process: ";
     cin >> fileName;
-    cout << "The adjacency list for your graph is: ";
+    cout << "The adjacency list for your graph is: " << endl;
     vector<list<int>> adjList;
     list<int> mtLst;  // an empty list
 
@@ -60,13 +60,13 @@ int main()
       else cout << "Unable to open file";
 
     printAdjList(adjList);
-
-    cout << connComponent(adjList[0], adjList[10]); //works!!!
+    cout << endl;
+    cout << connComponent(adjList[2], adjList[3]); //connComponent is wrecking the program
     bool flag = 1;
     //Prompt user to merge the lists:
     do{
 
-      cout << "Enter two list ids to potentially merge together or -1 to quit: ";
+      cout << "Enter two list ids to potentially merge together or -1 to quit: " << endl;
       int list1, list2;
       list1 = 0;
       list2 = 0;
@@ -74,14 +74,15 @@ int main()
       cin >> list1 >> list2;
       if((list1 != -1) || (list2 != -1)) //test if user wants to quit
       {
-          ++list1;
-          ++list2;
-          merge2(adjList[list1], adjList[list2]);
-          if(adjList[list1].size() > adjList[list2].size())
-              adjList[list2].erase(adjList[list2].begin(), adjList[list2].end());
-          else
-              adjList[list1].erase(adjList[list1].begin(), adjList[list1].end());
+          if(merge2(adjList[++list1], adjList[++list2]))
+          {
+              if(adjList[list1].size() > adjList[list2].size())
+              adjList.erase(adjList.begin() + list2);
+              else
+              adjList.erase(adjList.begin() + list1);
 
+          printAdjList(adjList); //need to reorder the vector
+          }
       }
       else
       {
@@ -126,36 +127,30 @@ void printAdjList(vector<list<int>> adjList)
 
 bool connComponent(const list<int>& a, const list<int>& b)
 {
-  std::list<int>::iterator temp_iter1, temp_iter2;
-  std::list<int> first;
-  first.assign(a.begin(), a.end());
-  std::list<int> second;
-  second.assign(b.begin(), b.end());
-  for(temp_iter1 = first.begin(); temp_iter1 != first.end(); ++temp_iter1)
-  {
-    //for(temp_iter2 = second.begin(); temp_iter2 != second.end(); ++temp_iter2)
-    //{
+      std::list<int>::iterator temp_iter1, temp_iter2;
+      std::list<int> first;
+      first.assign(a.begin(), a.end());
+      std::list<int> second;
+      second.assign(b.begin(), b.end());
+      temp_iter2 = second.begin();
+        for(temp_iter1 = first.begin(); temp_iter1 != first.end(); ++temp_iter1)
+        {
 
-    if(*temp_iter1 == *temp_iter2)
-    {
-      return true;
-    }
-    else
-    {
-      if(*temp_iter1 > *temp_iter2)
-      {
-        ++temp_iter2;
-      }
-    }
-
-    ++temp_iter1;
-      //if(*temp_iter1 == *temp_iter2)
-      //  return true;
- }
-
-
-
-  return false;
+            if(*temp_iter1 == *temp_iter2)
+            {
+              return true;
+            }
+            else
+            {
+              if(*temp_iter1 > *temp_iter2)
+              {
+                ++temp_iter2;
+              }
+              if(*temp_iter1 == *temp_iter2)
+                return true;
+            }
+        }
+    return false;
 }
 
 bool merge2(list<int> &a, list<int> &b)
