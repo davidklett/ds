@@ -18,7 +18,7 @@ list<int>::iterator find_gt(list<int>::iterator start, list<int>::iterator stop,
                             int x);
 
 void printAdjList(vector<list<int>> adjList);
-
+bool connComponent(const list<int>& a, const list<int>& b);
 int main()
 {
 
@@ -53,26 +53,9 @@ int main()
 
       else cout << "Unable to open file";
 
-
-    std::list<int>::const_iterator iterator;
-    for(iterator = adjList[0].begin(); iterator != adjList[0].end(); ++iterator)
-    {
-        //std::cout << *iterator;
-    }
-
-    //test find_gt
-    find_gt(adjList[0].begin(), adjList[0].end(), 3);
-
-    //making final adjacency list:
-     vector<list<int>> adjListFinal;
-    list<int> myList;  // an empty list
-    adjListFinal.push_back(myList);
-    std::list<int>::iterator temp;
-    temp = adjList[0].begin();
-    //list::insert(temp, adjList[0].begin()); //not working!!!
-
     printAdjList(adjList);
 
+    cout << connComponent(adjList[0], adjList[10]); //works!!!
     return 0;
 }
 
@@ -109,12 +92,14 @@ void printAdjList(vector<list<int>> adjList)
 
 bool connComponent(const list<int>& a, const list<int>& b)
 {
-  std::list<int>::iterator aIter = a.begin();
-  std::list<int>::iterator bIter = b.begin();
   std::list<int>::iterator temp_iter1, temp_iter2;
-  for(temp_iter1 = a.begin(); temp_iter != a.end(); ++temp_iter)
+  std::list<int> first;
+  first.assign(a.begin(), a.end());
+  std::list<int> second;
+  second.assign(b.begin(), b.end());
+  for(temp_iter1 = first.begin(); temp_iter1 != first.end(); ++temp_iter1)
   {
-    for(temp_iter2 = b.begin(); bIter != b.end(); ++bIter)
+    for(temp_iter2 = second.begin(); temp_iter2 != second.end(); ++temp_iter2)
     {
       if(*temp_iter1 == *temp_iter2)
         return true;
@@ -126,5 +111,26 @@ bool connComponent(const list<int>& a, const list<int>& b)
 
 bool merge2(list<int> &a, list<int> &b)
 {
+    if(connComponent(a, b))
+    {
+        std::list<int> tempBuffer;
+        std::list<int>::iterator tempIter;
+        for(tempIter = a.begin(); tempIter != a.end(); ++tempIter)
+        {
+            tempBuffer.push_back(*tempIter);
+        }
 
+        for(tempIter = b.begin(); tempIter != b.end(); ++tempIter)
+        {
+            tempBuffer.push_back(*tempIter);
+        }
+
+        tempBuffer.unique();
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
