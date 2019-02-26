@@ -22,11 +22,16 @@ bool connComponent(const list<int>& a, const list<int>& b);
 int main()
 {
 
+  string fileName;
+  //Prompt user for input for the file name
+    cout << "Please enter the graph filename to process: ";
+    cin >> fileName;
+    cout << "The adjacency list for your graph is: ";
     vector<list<int>> adjList;
     list<int> mtLst;  // an empty list
 
       string line;
-      ifstream myfile ("graph.dat");
+      ifstream myfile (fileName); //use the user's input name for the file
       int countV = 0;
 
       if (myfile.is_open())
@@ -56,6 +61,32 @@ int main()
     printAdjList(adjList);
 
     cout << connComponent(adjList[0], adjList[10]); //works!!!
+    bool flag = 1;
+    //Prompt user to merge the lists:
+    do{
+
+      cout << "Enter two list ids to potentially merge together or -1 to quit: ";
+      int merge1, merge2;
+
+      cin >> merge1 >> merge2;
+      if((merge1 != -1) || (merge2 != -1)) //test if user wants to quit
+      {
+          ++merge1;
+          ++merge2;
+          merge2(adjList[merge1], adjList[merge2]);
+          if(adjList[merge1].size() > adjList[merge2].size())
+              adjList[merge2].erase();
+          else
+              adjList[merge1].erase();
+          
+      }
+      else
+      {
+          flag = 0;
+      }
+      
+    }while(flag);
+    
     return 0;
 }
 
@@ -99,11 +130,25 @@ bool connComponent(const list<int>& a, const list<int>& b)
   second.assign(b.begin(), b.end());
   for(temp_iter1 = first.begin(); temp_iter1 != first.end(); ++temp_iter1)
   {
-    for(temp_iter2 = second.begin(); temp_iter2 != second.end(); ++temp_iter2)
+    //for(temp_iter2 = second.begin(); temp_iter2 != second.end(); ++temp_iter2)
+    //{
+
+    if(*temp_iter1 == *temp_iter2)
     {
-      if(*temp_iter1 == *temp_iter2)
-        return true;
+      return true;
     }
+    else
+    {
+      if(*temp_iter1 > *temp_iter2)
+      {
+        ++temp_iter2;
+      }
+    }
+       ++temp_iter1;
+      //if(*temp_iter1 == *temp_iter2)
+      //  return true;
+    }
+   
   }
 
   return false;
